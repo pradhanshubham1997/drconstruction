@@ -1,26 +1,91 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --color-brand-50: #fff7ed;
+  --color-brand-100: #ffedd5;
+  --color-brand-200: #fed7aa;
+  --color-brand-300: #fdba74;
+  --color-brand-400: #fb923c;
+  --color-brand-500: #f97316;
+  --color-brand-600: #ea580c;
+  --color-brand-700: #c2410c;
+  --color-ink-50: #f8fafc;
+  --color-ink-100: #f1f5f9;
+  --color-ink-200: #e2e8f0;
+  --color-ink-300: #cbd5e1;
+  --color-ink-400: #94a3b8;
+  --color-ink-500: #64748b;
+  --color-ink-600: #475569;
+  --color-ink-700: #334155;
+  --color-ink-800: #1e293b;
+  --color-ink-900: #0f172a;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+html { scroll-behavior: smooth; overflow-x: clip; }
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: #f6f7f9;
+  color: #0f172a;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+  text-size-adjust: 100%;
+}
+
+/* Media never forces horizontal overflow; long IDs/amounts wrap safely */
+img, svg, canvas { max-width: 100%; }
+.wrap-anywhere { overflow-wrap: anywhere; word-break: break-word; }
+
+/* Prevent iOS auto-zoom on form focus: 16px minimum on small screens */
+@media (max-width: 640px) {
+  input, select, textarea { font-size: 16px !important; }
+}
+
+/* Comfortable touch targets on coarse-pointer (touch) devices only.
+   Desktop keeps its existing compact density. */
+@media (pointer: coarse) {
+  button, nav a { min-height: 44px; }
+  input:not([type="checkbox"]):not([type="radio"]),
+  select, textarea { min-height: 44px; }
+}
+
+::selection { background: #fed7aa; }
+
+.card {
+  background: #fff;
+  border: 1px solid #e8ecf1;
+  border-radius: 16px;
+  box-shadow: 0 1px 2px rgba(15,23,42,.04), 0 8px 24px -16px rgba(15,23,42,.12);
+  min-width: 0; /* allow grid children (charts, tables) to shrink without overflow */
+}
+.card-hover { transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+.card-hover:hover { transform: translateY(-2px); box-shadow: 0 2px 4px rgba(15,23,42,.06), 0 16px 32px -16px rgba(15,23,42,.18); border-color: #dbe2ea; }
+
+.btn-press:active { transform: scale(.98); }
+.fade-in { animation: fadeIn .35s ease both; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px);} to { opacity: 1; transform: none;} }
+.slide-up { animation: slideUp .3s ease both; }
+@keyframes slideUp { from { opacity: 0; transform: translateY(14px);} to { opacity: 1; transform: none;} }
+
+.calc-pulse { animation: calcPulse 1.2s ease-in-out infinite; }
+@keyframes calcPulse { 0%,100% { opacity: 1;} 50% { opacity: .55;} }
+
+.progress-anim { transition: width 1s cubic-bezier(.22,1,.36,1); }
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+.thin-scroll::-webkit-scrollbar { height: 6px; width: 6px; }
+.thin-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 99px; }
+
+.map-grid {
+  background-image:
+    linear-gradient(#e8edf3 1px, transparent 1px),
+    linear-gradient(90deg, #e8edf3 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+@media print {
+  .print-hidden { display: none !important; }
+  .print-full { box-shadow: none !important; border: 1px solid #ddd !important; }
+  body { background: #fff !important; }
 }
